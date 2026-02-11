@@ -17,15 +17,20 @@ A Python CLI tool that analyzes login logs and detects suspicious activity such 
 ## Usage
 
 py detect.py
+
 py detect.py --only-attack
+
 py detect.py --top 3
+
 py detect.py --dawn 4
 
 
 ## Log Format
 
 user,ip,time,status
+
 user1,8.8.8.8,09:05,FAILED
+
 user2,61.22.1.5,02:10,SUCCESS
 
 
@@ -33,6 +38,10 @@ user2,61.22.1.5,02:10,SUCCESS
 
 Built to practice:
 
+- Security log analysis
+- Attack detection logic
+- CLI tool design
+- Git/GitHub workflow
 - Security log analysis
 - Attack detection logic
 - CLI tool design
