@@ -1,0 +1,4 @@
+[ATTACK] user1 brute force from IP 8.8.8.8 (5 fails)
+
+=== Risk Ranking ===
+user1: 80 pts | multi-ip(2), ip-bruteforce(8.8.8.8)
