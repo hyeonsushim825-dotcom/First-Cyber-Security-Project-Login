@@ -40,13 +40,13 @@ def main():
 
         ips = sorted({ip for ip, _, _ in records})
 
-        # rule 1) 여러 IP 로그인 (요약 1줄)
+        # rule 1) 여러 IP 로그인
         if len(ips) > 1:
             alerts.append(f"[ERROR] {user} several IP login: {', '.join(ips)}")
             score += 20
             reasons.append(f"multi-ip({len(ips)})")
 
-        # rule 2) 새벽 로그인 (요약 1줄)
+        # rule 2) 새벽 로그인
         dawn_times = []
         for ip, t, status in records:
             hour = int(t.split(":")[0])
@@ -55,11 +55,10 @@ def main():
         if dawn_times:
             dawn_times = ", ".join(sorted(dawn_times))
             alerts.append(f"[ERROR] {user} dawn time logins: {dawn_times}")
-            # dawn_times는 이미 문자열로 바뀌었으니 개수는 리스트일 때 세는 게 깔끔함
             score += 10
             reasons.append("dawn-login")
 
-        # rule 4) 같은 IP에서 실패 여러번 (IP 기준 brute force)
+        # rule 4) 같은 IP에서 실패 여러번 
         fails_by_ip = defaultdict(int)
         total_fails = 0
         for ip, t, status in records:
@@ -76,7 +75,7 @@ def main():
                 score += 60
                 reasons.append(f"ip-bruteforce({ip})")
 
-        # rule 3) 유저 전체 실패횟수는 "IP 공격이 없을 때만" 띄우기 (중복 제거)
+        # rule 3) 유저 전체 실패횟수는 "IP 공격이 없을 때만" 띄우기
         if (not ip_attack_found) and total_fails >= args.user_threshold:
             alerts.append(f"[ATTACK] {user} possible brute force attack ({total_fails} fails)")
             attack_users.add(user)
@@ -85,7 +84,7 @@ def main():
         
         rankings.append((score, user, ", ".join(reasons)))
 
-    # 출력 + 파일 저장 (중복 없이)
+    # 출력 + 파일 저장
     filtered = []
     for a in alerts:
         if args.only_attack and not a.startswith("[ATTACK]"):
@@ -95,7 +94,7 @@ def main():
     for a in filtered:
         print(a)
 
-    # 랭킹 문자열 만들기 (top 적용)
+    # 랭킹 문자열 만들기
     sorted_rankings = sorted(rankings, reverse=True)
     ranking_lines = []
     ranking_lines.append("=== Risk Ranking ===")
